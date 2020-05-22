@@ -37,15 +37,6 @@ def seed_everything(seed=1234):
     np.random.seed(seed)
 
 
-def smote_adataset(x_train, y_train):
-    """ Oversampling """
-
-    sm = SMOTE(random_state=SEED)
-    x_train_res, y_train_res = sm.fit_sample(x_train, y_train.ravel())
-
-    return x_train_res, y_train_res
-
-
 def get_callback(weights_path, metrics):
     early_stop_patience = 15
     reduce_lr_factor = 0.25
@@ -99,14 +90,6 @@ def main():
     folds_ids = pd.read_csv('train-5-folds.csv')
     train_files = folds_ids.loc[folds_ids.fold != NUM_FOLD, 'ImageId_ClassId'].values
     valid_files = folds_ids.loc[folds_ids.fold == NUM_FOLD, 'ImageId_ClassId'].values
-    
-    # train_index = np.array(folds_ids.loc[folds_ids.fold != NUM_FOLD].index).reshape(-1, 1)
-    # train_group = folds_ids.loc[folds_ids.fold != NUM_FOLD, 'class'].values
-    
-    # train_index, train_group = smote_adataset(train_index, train_group)
-    # train_index = train_index.ravel()
-    # train_files = folds_ids.loc[train_index, 'ImageId_ClassId'].values
-    # valid_files = folds_ids.loc[folds_ids.fold == NUM_FOLD, 'ImageId_ClassId'].values
 
     # Dataset for train images
     train_dataset = Dataset_train(
